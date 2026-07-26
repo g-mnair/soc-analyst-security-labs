@@ -12,7 +12,7 @@ I'm an aspiring SOC Analyst with an EC-Council CSA certification, building pract
 |---|---|
 | Attacker machine | Kali Linux (VirtualBox VM) |
 | Target machine | Metasploitable2 (VirtualBox VM) |
-| Network mode | Host-only / Internal Network (isolated for safety) |
+| Network mode | Bridged Adapter |
 
 ## Labs
 
@@ -40,12 +40,10 @@ These three labs mirror the natural first phase of a SOC/security assessment wor
 
 ## Skills Demonstrated
 
-- Network reconnaissance & host discovery (ARP, Nmap)
-- Service enumeration & version fingerprinting
-- Vulnerability identification & CVE research
-- Packet capture & traffic analysis
-- Vulnerability scanning & CVSS-based prioritization
-- Technical documentation & security reporting
+-Network scanning (Nmap, arp-scan)
+-Traffic analysis (Wireshark)
+-Vulnerability scanning (OpenVAS)
+-Security documentation
 
 ## Contact
 
