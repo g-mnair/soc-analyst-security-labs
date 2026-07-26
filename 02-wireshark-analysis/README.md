@@ -163,7 +163,7 @@ Unlike Telnet and FTP, SSH encrypts all communication, so the username and passw
 
 ### Step 7: Saved Capture File
 
-The full session was saved as `metasploitable-capture.pcapng` and included in this repository under `captures/`, allowing the complete capture to be reviewed directly in Wireshark rather than relying on screenshots alone.
+The full session was saved as `metasploitable-capture.pcapng` and included in this repository, allowing the complete capture to be reviewed directly in Wireshark rather than relying on screenshots alone.
 
 ---
 
