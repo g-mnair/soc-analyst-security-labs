@@ -40,10 +40,10 @@ These three labs mirror the natural first phase of a SOC/security assessment wor
 
 ## Skills Demonstrated
 
--Network scanning (Nmap, arp-scan)
--Traffic analysis (Wireshark)
--Vulnerability scanning (OpenVAS)
--Security documentation
+- Network scanning (Nmap, arp-scan)
+- Traffic analysis (Wireshark)
+- Vulnerability scanning (OpenVAS)
+- Security documentation
 
 ## Contact
 
