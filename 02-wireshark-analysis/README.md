@@ -77,7 +77,7 @@ ip.addr == 192.168.220.6 && tcp
 ![Step 3b - TCP Flags Detail](03b-tcp-flags-detail.png)
 
 **Findings:**
-A rapid burst of `SYN` packets was sent across many destination ports in a short time window, with `SYN-ACK` or `RST-ACK` responses depending on port state. This SYN-flood-like pattern across numerous ports in seconds — rather than a single connection — is a recognizable signature of port scanning activity that a SOC analyst or SIEM would flag for review.
+A large number of SYN packets were sent to many destination ports within a few seconds. The target system responded with either SYN-ACK or RST-ACK, depending on whether each port was open or closed. This type of rapid activity across multiple ports is a common sign of a port scan and would usually be flagged by a SOC analyst or SIEM for investigation.
 
 ---
 
@@ -104,13 +104,13 @@ Right-clicked a Telnet packet → **Follow → TCP Stream** to reconstruct the f
 ![Step 4b - Telnet Cleartext Credentials](04b-telnet-cleartext-credentials.png)
 
 **Findings:**
-The TCP stream reconstruction revealed the entire Telnet session in plain, readable text — including the username and password exactly as typed. This directly demonstrates why Telnet should never be used to access systems containing sensitive data: any party able to observe network traffic (e.g., via a compromised switch, ARP spoofing, or a tap) can trivially recover credentials.
+The reconstructed TCP stream showed the entire Telnet session in plain text, including the username and password exactly as they were entered. This shows why Telnet should never be used for systems with sensitive data, because anyone who can capture the network traffic can easily see the login credentials.
 
 ---
 
 ### Step 5: Capturing an Anonymous FTP Login
 
-Connected to the target's FTP service. Only anonymous login was accepted in this environment (`msfadmin`/`msfadmin` was not a valid FTP account), which itself validates the `ftp-anon` finding from the Nmap lab.
+Connected to the target's FTP service. Only anonymous login was allowed, while msfadmin/msfadmin could not be used to log in. This confirms the ftp-anon result found during the Nmap scan.
 
 **Command (separate terminal):**
 ```
@@ -131,7 +131,7 @@ Followed the TCP stream to view the full session.
 ![Step 5b - FTP Cleartext Session](05b-ftp-cleartext-session.png)
 
 **Findings:**
-The stream showed the `USER anonymous` command followed by a `230 Login successful` response, requiring no valid password. This confirms, at the traffic level, the anonymous-FTP-access finding first identified via Nmap's `ftp-anon` script in the Reconnaissance Lab — demonstrating the same misconfiguration from two different analysis angles.
+The captured traffic showed the USER anonymous command followed by the PASS anonymous command and a 230 Login successful response. This confirms that the FTP server allowed anonymous access, matching the ftp-anon finding from the Nmap scan.
 
 ---
 
@@ -139,14 +139,11 @@ The stream showed the `USER anonymous` command followed by a `230 Login successf
 
 Attempted to connect via SSH and deliberately entered incorrect passwords multiple times to simulate a brute-force pattern.
 
-**Connection note:** the default SSH client refused to connect initially, since Metasploitable2's OpenSSH 4.7 only offers deprecated host key types (`ssh-rsa`, `ssh-dss`) that modern clients disable by default. This required explicitly re-enabling the legacy algorithm:
+**Connection note:** The SSH connection failed at first because the Metasploitable2 server uses older SSH host key types (ssh-rsa and ssh-dss) that modern SSH clients disable by default. To connect successfully, the legacy host key algorithm had to be enabled manually.
 ```
 ssh -oHostKeyAlgorithms=+ssh-rsa -oPubkeyAcceptedAlgorithms=+ssh-rsa msfadmin@192.168.220.6
 ```
-A host key mismatch warning also appeared, since the target IP had previously been associated with a different key in the local `known_hosts` file — a normal occurrence in a lab environment with reused IPs, resolved with:
-```
-ssh-keygen -f '/home/kalivm/.ssh/known_hosts' -R '192.168.220.6'
-```
+
 
 **Terminal (failed login attempts):**
 ![Step 6b - Failed SSH Logins](06b-failed-ssh-logins.png)
@@ -160,7 +157,7 @@ tcp.port == 22
 ![Step 6c - SSH Connection Pattern](06c-ssh-connection-pattern.png)
 
 **Findings:**
-Unlike Telnet and FTP, SSH's encryption meant the actual passwords could not be recovered from the capture. However, the *pattern* of activity was still clearly visible: multiple distinct TCP handshakes to port 22 in a short time window, each followed by a brief encrypted key-exchange, then connection teardown. This repeated connect-fail-disconnect pattern is exactly what a SOC analyst or SIEM correlation rule would use to detect a brute-force attempt, even without visibility into the credentials themselves — illustrating both the value of encryption and the fact that behavioral/traffic-pattern analysis remains possible and necessary even against encrypted protocols.
+Unlike Telnet and FTP, SSH encrypts all communication, so the username and password could not be seen in the packet capture. However, the network traffic still showed many short connections to port 22, each with a TCP handshake, an encrypted key exchange, and then the connection closing. This repeated connection pattern is a common sign of a brute-force attack and is something a SOC analyst or SIEM can detect even without seeing the actual credentials.
 
 ---
 
@@ -182,7 +179,7 @@ The full session was saved as `metasploitable-capture.pcapng` and included in th
 
 ## Conclusion
 
-This lab demonstrated how the same underlying activity — a scan, a login, a series of failed attempts — appears very differently on the wire depending on the protocol involved. Plaintext protocols (Telnet, FTP) exposed credentials directly, while SSH's encryption protected credential content but still left a detectable behavioral fingerprint. Together with the Nmap Reconnaissance Lab, this reinforces a core SOC principle: encryption protects *content*, but traffic *patterns* remain a critical detection signal regardless of encryption.
+This lab showed how the same activity, such as port scanning or logging in, looks different on the network depending on the protocol used. Telnet and FTP exposed login credentials because they send data in plain text, while SSH encrypted the credentials but still showed suspicious connection patterns. Along with the Nmap Reconnaissance Lab, this demonstrates an important SOC concept: encryption protects the data being sent, but network traffic patterns can still be used to detect malicious activity.
 
 ## Tools Used
 
