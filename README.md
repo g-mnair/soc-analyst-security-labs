@@ -1,6 +1,6 @@
 # SOC Analyst Security Labs
 
-A collection of hands-on security labs built to practice core SOC analyst skills — network reconnaissance, traffic analysis, and vulnerability assessment — against an intentionally vulnerable target environment. Each lab is self-contained with its own methodology, findings, and evidence, and together they reflect the early stages of a real-world security assessment workflow.
+A collection of hands-on security labs built to practice core SOC analyst skills — network reconnaissance and traffic analysis — against an intentionally vulnerable target environment. Each lab is self-contained with its own methodology, findings, and evidence, and together they reflect the early stages of a real-world security assessment workflow.
 
 ## About
 
@@ -12,37 +12,31 @@ I'm an aspiring SOC Analyst with an EC-Council CSA certification, building pract
 |---|---|
 | Attacker machine | Kali Linux (VirtualBox VM) |
 | Target machine | Metasploitable2 (VirtualBox VM) |
-| Network mode | Bridged Adapter |
+| Network mode | Host-only / Internal Network (isolated for safety) |
 
 ## Labs
 
 | # | Lab | Tools | Status | Link |
 |---|---|---|---|---|
 | 01 | Network Reconnaissance | Nmap, arp-scan | ✅ Complete | [01-nmap-recon](./01-nmap-recon) |
-| 02 | Network Traffic Analysis | Wireshark | 🔜 In Progress | [02-wireshark-analysis](./02-wireshark-analysis) |
-| 03 | Vulnerability Assessment | OpenVAS | 🔜 Planned | [03-openvas-vuln-assessment](./03-openvas-vuln-assessment) |
+| 02 | Network Traffic Analysis | Wireshark | ✅ Complete | [02-wireshark-analysis](./02-wireshark-analysis) |
 
 ### 01 — Network Reconnaissance (Nmap)
 Performed host discovery, port scanning, service/version detection, OS fingerprinting, and vulnerability-revealing script scans against a target host. Identified and documented multiple real CVEs (vsftpd backdoor, UnrealIRCd backdoor, distccd RCE) along with misconfigurations like disabled SMB signing and anonymous FTP access.
 → [Full writeup](./01-nmap-recon/README.md)
 
 ### 02 — Network Traffic Analysis (Wireshark)
-Captured and analyzed packet-level traffic to identify attack patterns such as brute-force login attempts and unencrypted credential transmission.
-→ Writeup coming soon
-
-### 03 — Vulnerability Assessment (OpenVAS)
-Ran a full vulnerability scan against the target, prioritized findings by CVSS severity, and authored remediation recommendations.
-→ Writeup coming soon
+Captured and analyzed packet-level traffic to identify attack patterns such as port scanning, plaintext credential exposure over Telnet/FTP, and a simulated SSH brute-force attempt — validating several findings from the Nmap lab at the traffic level.
+→ [Full writeup](./02-wireshark-analysis/README.md)
 
 ## Why These Labs
 
-These three labs mirror the natural first phase of a SOC/security assessment workflow — knowing what's on the network, watching what crosses it, and knowing what's exposed on it. They're designed to build toward a combined end-to-end exercise tying reconnaissance, detection, and vulnerability management together.
+These labs mirror the natural first phase of a SOC/security assessment workflow — knowing what's on the network, and watching what crosses it. Together they show a connected investigative process: reconnaissance identifies exposed services and misconfigurations, and traffic analysis confirms and observes those same findings in real network activity.
 
 ## Skills Demonstrated
 
 - Network scanning (Nmap, arp-scan)
 - Traffic analysis (Wireshark)
-- Vulnerability scanning (OpenVAS)
 - Security documentation
 
 ## Contact
