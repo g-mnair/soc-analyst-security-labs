@@ -10,7 +10,7 @@ Perform a structured network reconnaissance exercise against an intentionally vu
 |---|---|
 | Attacker machine | Kali Linux (VirtualBox VM) |
 | Target machine | Metasploitable2 (VirtualBox VM) |
-| Network mode | Host-only / Internal Network (isolated from the host LAN for safety, since Metasploitable2 is intentionally vulnerable) |
+| Network mode | Bridged Adapter |
 | Target IP | 192.168.220.6 |
 | Attacker IP | 192.168.220.5 |
 
