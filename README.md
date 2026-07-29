@@ -12,7 +12,7 @@ I'm an aspiring SOC Analyst with an EC-Council CSA certification, building pract
 |---|---|
 | Attacker machine | Kali Linux (VirtualBox VM) |
 | Target machine | Metasploitable2 (VirtualBox VM) |
-| Network mode | Host-only / Internal Network (isolated for safety) |
+| Network mode | Bridged Adapter |
 
 ## Labs
 
