@@ -14,7 +14,6 @@ Perform a structured network reconnaissance exercise against an intentionally vu
 | Target IP | 192.168.220.6 |
 | Attacker IP | 192.168.220.5 |
 
-> Networking note: an isolated network mode was deliberately chosen over bridged networking, since Metasploitable2's exposed, unpatched services would otherwise be reachable by any other device on the same LAN.
 
 ---
 
